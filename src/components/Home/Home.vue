@@ -18,16 +18,13 @@
           </h1>
 
           <div class="cta-group">
-            <button class="btn btn-primary">
-              Got a project?
-            </button>
-            <button 
-                href="../../../public/Diaz, Barry A. - Resume.pdf" 
-                download 
-                class="btn btn-secondary"
-                >
-                My resume
-            </button>
+            <a 
+              href="../../../src/files/Diaz, Barry A. - Resume.pdf" 
+              download 
+              class="btn btn-primary"
+            >
+              My resume
+            </a>
           </div>
         </div>
 
@@ -268,7 +265,7 @@
         <div class="socials">
           <a href="mailto:barryxdiaz@gmail.com" class="social-link">Email</a>
           <a href="https://www.linkedin.com/in/barryxdiaz/" target="_blank" class="social-link">LinkedIn</a>
-          <a href="#" class="social-link">GitHub</a>
+          <a href="https://github.com/barryxdiaz" target="_blank" class="social-link">GitHub</a>
         </div>
       </div>
     </footer>
@@ -300,7 +297,10 @@
 <script>
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
- 
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
+
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+
 export default {
   name: 'HomePage',
   inject: ['lenis'],
@@ -343,7 +343,6 @@ export default {
   directives: {
     reveal: {
       mounted(el) {
-        gsap.registerPlugin(ScrollTrigger);
         gsap.fromTo(el, 
           { 
             y: 60, 
@@ -370,34 +369,21 @@ export default {
     }
   },
   methods: {
-    getSkillIcon(iconName) {
-      if(iconName === 'laravel' || iconName === 'mysql' || iconName === 'python'){
+      getSkillIcon(iconName) {
+      if (iconName === 'laravel' || iconName === 'mysql' || iconName === 'python') {
         return `https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${iconName}/${iconName}-original.svg`
       } else {
         return `https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${iconName}/${iconName}-plain.svg`
       }
     },
     scrollToTop() {
-      // 1. Normalize the instance (Ref vs Object)
-      const lenisInstance = this.lenis && this.lenis.value ? this.lenis.value : this.lenis;
-      
-      if (lenisInstance && typeof lenisInstance.scrollTo === 'function') {
-        // 2. Use Lenis scrollTo with explicit duration to ensure smoothness
-        lenisInstance.scrollTo(0, {
-          duration: 1.5, // 1.5 seconds scroll time
-          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) // Standard smooth easing
-        });
-      } else {
-        // 3. Fallback to native smooth scroll
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth'
-        });
-      }
+      gsap.to(window, {
+        scrollTo: { y: 0 },
+        duration: .65,
+        ease: 'sine.inOut'
+      });
     },
     handleLenisScroll(e) {
-      // Log for debugging
-      // console.log("Lenis scroll event:", e.scroll); 
       this.showBackToTop = e.scroll > 50;
     },
     handleNativeScroll() {
@@ -405,22 +391,15 @@ export default {
     }
   },
   mounted() {
-    // 1. Debug: Check what we actually injected
-    // console.log("Injected raw lenis:", this.lenis);
-
-    // 2. Normalize the instance
-    const lenisInstance = this.lenis && this.lenis.value ? this.lenis.value : this.lenis;
-
+    const lenisInstance = this.lenis?.value ?? this.lenis;
     if (lenisInstance && typeof lenisInstance.on === 'function') {
-      // Valid Lenis instance found
       lenisInstance.on('scroll', this.handleLenisScroll);
     } else {
       window.addEventListener('scroll', this.handleNativeScroll);
     }
   },
   beforeUnmount() {
-    const lenisInstance = this.lenis && this.lenis.value ? this.lenis.value : this.lenis;
-    
+    const lenisInstance = this.lenis?.value ?? this.lenis;
     if (lenisInstance && typeof lenisInstance.off === 'function') {
       lenisInstance.off('scroll', this.handleLenisScroll);
     } else {

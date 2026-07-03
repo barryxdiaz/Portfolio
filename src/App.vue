@@ -5,7 +5,7 @@
       <nav class="navbar">
         <div class="nav-content">
           <div class="brand">
-            BARRY DIAZ<span class="accent">.</span>
+            BARRY <span class="accent">DIAZ</span>
           </div>
           
           <!-- Desktop Menu -->
