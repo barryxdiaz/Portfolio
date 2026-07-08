@@ -19,7 +19,7 @@
           </h1>
 
           <div class="cta-group">
-            <a href="../../../public/Diaz, Barry A. - Resume.pdf" download class="btn btn-primary">
+            <a href="/Diaz, Barry A. - Resume.pdf" download class="btn btn-primary">
               My resume
             </a>
           </div>
