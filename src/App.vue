@@ -95,12 +95,18 @@ export default {
       this.isDarkMode = !this.isDarkMode
       localStorage.setItem('theme', this.isDarkMode ? 'dark' : 'light')
     },
+    
     handleNavClick(event) {
       const targetId = event.target.getAttribute('href');
       if (this.isMobileMenuOpen) {
         this.isMobileMenuOpen = false;
       }
-      if (targetId && targetId.startsWith('#')) {
+
+      if (!targetId || !targetId.startsWith('#')) return;
+
+      const notOnHome = this.$route.path !== '/';
+
+      const scrollToTarget = () => {
         if (targetId === '#') {
           this.lenis.scrollTo(0);
         } else {
@@ -110,9 +116,22 @@ export default {
           }
         }
         window.history.replaceState(null, null, ' ');
-      } 
+      };
+
+      if (notOnHome) {
+        // Navigate home first, then wait for Home.vue to render before scrolling
+        this.$router.push('/').then(() => {
+          this.$nextTick(() => {
+            // small delay so the reveal/layout has settled before Lenis measures positions
+            setTimeout(scrollToTarget, 100);
+          });
+        });
+      } else {
+        scrollToTarget();
+      }
     }
   },
+
   mounted() {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'light') {
