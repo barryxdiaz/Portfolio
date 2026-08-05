@@ -32,7 +32,7 @@
             <div class="circle-bg-large"></div>
             <div class="circle-border"></div>
             <div class="image-frame">
-              <img src="../../../images/IMG_2712 2X2 2.jpg" alt="Barry Diaz" class="profile-img" />
+              <img src="../../public/images/2X2.jpg" alt="Barry Diaz" class="profile-img" />
             </div>
           </div>
         </div>
